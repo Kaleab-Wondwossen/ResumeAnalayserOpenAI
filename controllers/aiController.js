@@ -5,6 +5,7 @@ import CV_Collection from "../models/CV_Collection.js";
 import Analysed_CV from "../models/Analysed_CV.js";
 import Recommended_CV from "../models/Recommended_CV.js";
 import Regenerated_CV from "../models/Regenerated_CV.js";
+import JobSpecificRecommendation from "../models/JobSpecificRecommendation.js";
 
 export const handleCVUpload = async (req, res) => {
   try {
@@ -97,6 +98,37 @@ export const recommendImprovements = async (req, res) => {
 
     const saved = await Recommended_CV.create({
       cv: cvId,
+      recommendations: structured.recommendations
+    });
+
+    res.status(200).json({ source, result: saved });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const recommendForSpecificJob = async (req, res) => {
+  const { cvText, cvId, jobDescription } = req.body;
+
+  if (!jobDescription) {
+    return res.status(400).json({ error: "Job description is required for specific job recommendations." });
+  }
+
+  const jobBasedPrompt = `Here is the target job description:\n${jobDescription}\n\nNow suggest improvements for this CV to better fit this role.\n\nCV:\n${cvText}\n\nReturn the suggestions as JSON format:
+
+{
+  "recommendations": [
+    { "type": "skill_gap", "message": "Learn Django REST Framework." },
+    { "type": "tech_trend", "message": "Highlight any cloud platform experience like AWS." }
+  ]
+}`;
+
+  try {
+    const { source, structured } = await callHybridModel(jobBasedPrompt, jobBasedPrompt);
+
+    const saved= await JobSpecificRecommendation.create({
+      cv: cvId,
+      jobDescription,
       recommendations: structured.recommendations
     });
 

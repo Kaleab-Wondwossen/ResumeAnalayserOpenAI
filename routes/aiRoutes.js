@@ -10,7 +10,8 @@ import {
   getAnalysisByCVId,
   getRecommendationsByCVId,
   getRewrittenByCVId,
-  getCVTextById
+  getCVTextById,
+  recommendForSpecificJob
 } from "../controllers/aiController.js";
 
 // File upload + all-in-one AI pipeline
@@ -20,6 +21,7 @@ router.post("/upload-cv", upload.single("cv"), handleCVUpload);
 router.post("/analyze-cv", analyzeCV);
 router.post("/recommend-cv", recommendImprovements);
 router.post("/rewrite-cv", rewriteCV);
+router.post("/recommend-specific-job", recommendForSpecificJob);
 
 // 🔍 New GET routes
 router.get("/analysis/:cvId", getAnalysisByCVId);
