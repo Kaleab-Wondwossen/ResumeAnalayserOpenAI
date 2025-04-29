@@ -91,7 +91,7 @@ export const analyzeCV = async (req, res) => {
 export const recommendImprovements = async (req, res) => {
   const { cvText, cvId } = req.body;
 
-  const prompt = `Give actionable suggestions to improve this CV for tech jobs in 2025. Return JSON with an array of recommendations (type and message).\n\nCV:\n${cvText}`;
+  const prompt = `Give actionable suggestions to improve this CV in 2025. Return JSON with an array of recommendations (type and message).\n\nCV:\n${cvText}`;
 
   try {
     const { source, structured } = await callHybridModel(prompt, prompt);
@@ -118,8 +118,8 @@ export const recommendForSpecificJob = async (req, res) => {
 
 {
   "recommendations": [
-    { "type": "skill_gap", "message": "Learn Django REST Framework." },
-    { "type": "tech_trend", "message": "Highlight any cloud platform experience like AWS." }
+    { "type": "skill_gap", "message": ${jobDescription}" },
+    { "type": "tech_trend", "message": ${jobDescription}"}
   ]
 }`;
 
