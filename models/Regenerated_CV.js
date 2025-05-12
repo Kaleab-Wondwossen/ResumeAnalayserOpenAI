@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const regeneratedCVSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   cv: { type: mongoose.Schema.Types.ObjectId, ref: "CV_Collection", required: true },
   jobDescription: { type: String, default: "" },
   rewrittenSections: {

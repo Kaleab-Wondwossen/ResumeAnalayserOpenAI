@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const processedCVSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // optional depending on if you're tracking logged-in users
+    ref: "User",
     required: false,
   },
   originalFileName: String,
